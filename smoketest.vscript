@@ -1,0 +1,22 @@
+# VScript smoke test. Copy to <game folder>\VScript\main.vscript
+# After each step open VScript\vscript.log to see what happened.
+
+print "smoke test loaded"
+
+on start {
+    print "on start ran; in-game clock reads ", hour(), ":", minute()
+}
+
+key F9 {
+    print "F9 pressed, ms since load = ", time()
+}
+
+every 5000 {
+    print "clock ", hour(), ":", minute()
+}
+
+# STEP 3 (writes game memory): remove the leading # on these 4 lines to try it
+# key F10 {
+#     setweather 2
+#     print "setweather 2 sent"
+# }

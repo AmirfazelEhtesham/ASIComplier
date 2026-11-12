@@ -1,0 +1,24 @@
+name: Build VScript
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install 32-bit MinGW (posix threads)
+        run: sudo apt-get update && sudo apt-get install -y g++-mingw-w64-i686-posix
+      - name: Compile
+        run: >
+          i686-w64-mingw32-g++-posix -std=c++17 -O2 -pthread -shared
+          -static -static-libgcc -static-libstdc++
+          -D_WIN32_WINNT=0x0601 -DNOMINMAX
+          -o VScript.asi VScript.cpp -luser32
+      - name: Show which DLLs it needs
+        run: i686-w64-mingw32-objdump -p VScript.asi | grep "DLL Name"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: VScript-asi
+          path: VScript.asi
